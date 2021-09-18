@@ -1,59 +1,37 @@
-#include<bits/stdc++.h>
-using namespace std;
-typedef long long int ll;
-#define pb push_back
+
 const ll mx = 1e5+123;
-const ll INF = INT_MAX;
-vector<pair<ll,ll>>adj[mx];
+const ll MOD = 1e9+7;
+const ll INF = LLONG_MAX;
+vector<pll>adj[mx];
 ll dis[mx],par[mx];
 bool vis[mx];
 
-ll m,n;
 
-void dijkstra(ll x){
-    for(ll i=0;i<n;i++){
-        dis[i] = INF;
-    }
-    priority_queue<pair<ll,ll>>q;           //(curr node,distance)
+ll n,m;
+
+void dijkstra(ll x) // passing source
+{
+    rep1(i,0,n)
+        dis[i] = INF; //INF = LLONG_MAX
+    priority_queue<pll>q;
     dis[x] = 0;
-    q.push({x,0});
+    q.push({0,x}); // contains distance && source node
 
-    while(!q.empty()){
-        ll v = q.top().first;              //contain current node
+    while(!q.empty()) {
+        ll v = q.top().S; // v contains current node
         q.pop();
-        if(vis[v]==0){                      //not visited
+        if(vis[v]==0)     // if current node is not visited
+        {
             vis[v] = 1;
-            for(auto u:adj[v]){
-                ll a = u.first;             //a = adj.node
-                ll b = u.second;            //b = adj.distance
-                if(dis[v]+b < dis[a]){
-                    dis[a] = dis[v]+b;
-                    q.push({a,-dis[a]});    //push neg distance for min possible in next node
+            for(auto u:adj[v]) {         // goto next adj node
+                ll a = u.F;              // a contains next adj node
+                ll b = u.S;              // b contains next adj distance
+                if(dis[v]+b < dis[a]) {  // relaxation
+                    dis[a] = dis[v]+b;   // UPDATE
+                    q.push({-dis[a],a}); // push negative dis for minimum possible and next node
+                    par[a] = v;
                 }
             }
         }
     }
 }
-
-int main()
-{
-    ios::sync_with_stdio(0);
-    cin.tie(0);
-    cin>>m>>n;
-    ll u,v,c,s,i;
-    for(i=0;i<n;i++){
-        cin>>u>>v>>c;
-        adj[u].pb({v,c});
-        adj[v].pb({u,c});
-    }
-    cout<<"Enter Source: "<<endl;
-    cin>>s;
-    dijkstra(s);
-    for(ll i=1;i<=m;i++){
-        cout<<s<<" --> "<<i<<" = "<<dis[i]<<endl;
-    }
-
-return 0;// @Imtiaz_rafi
-}
-
-
