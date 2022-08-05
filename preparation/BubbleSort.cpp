@@ -11,6 +11,7 @@ int main()
     for(i=0;i<a;i++){
         cin>>b[i];
     }
+    //Bubble Sort
     for(i=0;i<a-1;i++){
         for(j=0;j<a-i-1;j++){
             if(b[j]>b[j+1]){
